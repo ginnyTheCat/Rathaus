@@ -4,7 +4,8 @@
     "password": ""
   },
   "matrix": {
-    "server": "https://matrix.lelux.net",
-    "accessToken": ""
+    "userId": "",
+    "accessToken": "",
+    "server": "https://matrix.lelux.net"
   }
 }

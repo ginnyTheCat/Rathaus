@@ -31,13 +31,13 @@ function liveData(stocks: Array<Stock>) {
   ws.connect("wss://streamer.finance.yahoo.com/");
 }
 
-async function historyData(stocks: Array<Stock>, wallet: Wallet) {
+async function historyData(wallet: Wallet) {
   const to = Math.floor(Date.now() / 1000);
   // 730 days + 30 sec (max transmission time)
   const from = to - 60 * 60 * 24 * 60 + 30;
 
   const responses = await Promise.all(
-    stocks.map(async (s) => {
+    wallet.stocks.map(async (s) => {
       return {
         stock: s,
         data: await Axios.get(
@@ -67,7 +67,7 @@ async function historyData(stocks: Array<Stock>, wallet: Wallet) {
   var lastTime = 0;
   for (const [time, data] of timeData) {
     if (lastTime.toString().slice(0, -1) !== time.toString().slice(0, -1)) {
-      await transaction(stocks, wallet);
+      await transaction(wallet);
     }
     data.forEach((price, stock) => (stock.tmp = price));
 

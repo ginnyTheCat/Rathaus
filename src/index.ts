@@ -4,6 +4,7 @@ import { Stock } from "./stock";
 import { CronJob } from "cron";
 import { transaction } from "./transaction";
 import { Wallet } from "./wallet";
+import { chatBot } from "./chat";
 // @ts-ignore
 import config from "../config.json";
 
@@ -11,18 +12,26 @@ const stocks = ["BMW", "VOW3", "DAI", "639", "DBK", "SIE", "SAP", "DPW", "APC"]
   .map((e) => e + ".DE")
   .map((e) => new Stock(e));
 
-const wallet = new Wallet(50000); // 50k
+const wallet = new Wallet(50000, stocks); // 50k
 
 async function live() {
   await start(config.website.username, config.website.password);
   liveData(stocks);
-  new CronJob("* * * * *", () => transaction(stocks, wallet), null, true);
+  new CronJob("* * * * *", () => transaction(wallet), null, true);
 }
 
 async function history() {
-  await historyData(stocks, wallet);
+  await historyData(wallet);
   await wallet.sell(...stocks);
   console.log(wallet.money);
 }
 
 live();
+if (config.matrix !== undefined) {
+  chatBot(
+    config.matrix.userId,
+    config.matrix.accessToken,
+    config.matrix.server,
+    wallet
+  );
+}

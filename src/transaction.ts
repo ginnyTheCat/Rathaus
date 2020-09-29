@@ -19,16 +19,16 @@ function profit(stock: Stock) {
   }
 }
 
-async function transaction(stocks: Array<Stock>, wallet: Wallet) {
+async function transaction(wallet: Wallet) {
   console.log("TRANSACTION");
-  stocks.forEach((e) => (e.current = e.tmp));
+  wallet.stocks.forEach((e) => (e.current = e.tmp));
 
-  const selected = stocks
+  const selected = wallet.stocks
     .filter((x) => profit(x) !== undefined && profit(x)! >= 0)
     .sort((a, b) => profit(a)! - profit(b)!)
     .slice(0, 5);
 
-  for (const stock of stocks) {
+  for (const stock of wallet.stocks) {
     if (selected.includes(stock)) {
       await wallet.buy(stock);
     } else {
@@ -37,7 +37,7 @@ async function transaction(stocks: Array<Stock>, wallet: Wallet) {
   }
 
   // Maybe done by sync on browser level
-  stocks.forEach((e) => (e.last = e.current));
+  wallet.stocks.forEach((e) => (e.last = e.current));
 }
 
 export { transaction, profit };

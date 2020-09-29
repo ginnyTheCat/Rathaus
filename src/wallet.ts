@@ -3,9 +3,11 @@ import * as browser from "./browser";
 
 class Wallet {
   money: number;
+  stocks: Array<Stock>;
 
-  constructor(money: number) {
+  constructor(money: number, stocks: Array<Stock>) {
     this.money = money;
+    this.stocks = stocks;
   }
 
   async buy(stock: Stock) {
@@ -37,6 +39,14 @@ class Wallet {
       this.money += price;
       stock.shares = 0;
     }
+  }
+
+  get theoreticalMoney() {
+    var money = this.money;
+    this.stocks
+      .filter((s) => s.last !== undefined)
+      .forEach((s) => (money += s.last! * s.shares));
+    return money;
   }
 }
 
