@@ -1,0 +1,10 @@
+{
+  "website": {
+    "username": "",
+    "password": ""
+  },
+  "matrix": {
+    "server": "https://matrix.lelux.net",
+    "accessToken": ""
+  }
+}
