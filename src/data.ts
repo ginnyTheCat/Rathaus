@@ -3,8 +3,6 @@ import { loadSync } from "protobufjs";
 import { Stock } from "./stock";
 import Axios from "axios";
 import { transaction } from "./transaction";
-import { time } from "console";
-import { launch } from "puppeteer";
 import { Wallet } from "./wallet";
 
 const Message = loadSync("yahoo.proto").lookupType("yahoo");
@@ -19,6 +17,7 @@ function liveData(stocks: Array<Stock>) {
         const stock = stocks.find((e) => e.symbol === res["id"]);
         if (stock !== undefined) {
           stock.tmp = res["price"];
+          console.log(`${stock.symbol} CHANGED TO ${res["price"]}`);
         }
       }
     });
@@ -38,11 +37,12 @@ async function historyData(wallet: Wallet) {
 
   const responses = await Promise.all(
     wallet.stocks.map(async (s) => {
+      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${s.symbol}?period1=${from}&period2=${to}&interval=5m`;
       return {
         stock: s,
-        data: await Axios.get(
-          `https://query1.finance.yahoo.com/v8/finance/chart/${s.symbol}?period1=${from}&period2=${to}&interval=5m`
-        ),
+        data: await Axios.get(url).catch(() => {
+          throw Error(`Error getting ${url}`);
+        }),
       };
     })
   );
@@ -66,7 +66,7 @@ async function historyData(wallet: Wallet) {
 
   var lastTime = 0;
   for (const [time, data] of timeData) {
-    if (lastTime.toString().slice(0, -1) !== time.toString().slice(0, -1)) {
+    if (lastTime.toString().slice(0, -3) !== time.toString().slice(0, -3)) {
       await transaction(wallet);
     }
     data.forEach((price, stock) => (stock.tmp = price));

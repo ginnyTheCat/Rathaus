@@ -5,15 +5,16 @@ const BROKERAGE_FEE = 0.0008; // 0.08 %
 
 class Stock {
   readonly symbol: string;
-  shares: number;
+  readonly name: string;
+  shares: number = 0;
 
   tmp?: number;
   current?: number;
   last?: number;
 
-  constructor(symbol: string) {
+  constructor(symbol: string, name: string) {
     this.symbol = symbol;
-    this.shares = 0;
+    this.name = name;
   }
 
   processingCost(shares: number) {
