@@ -1,4 +1,4 @@
-import { Matrix, Message } from "xbot";
+import { Matrix, Message } from "@leluxnet/xbot";
 import { Wallet } from "./wallet";
 
 export async function chatBot(

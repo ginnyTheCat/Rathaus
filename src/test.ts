@@ -3,7 +3,7 @@ import { Stock } from "./stock";
 import { profit } from "./transaction";
 
 describe("calculate", () => {
-  const stock = new Stock("SYMBOL");
+  const stock = new Stock("SYMBOL", "Name");
   stock.current = 110;
   stock.last = 100;
   it("buyingCost", () => {

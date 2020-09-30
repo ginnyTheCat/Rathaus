@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.chatBot = void 0;
-const xbot_1 = require("xbot");
+const xbot_1 = require("@leluxnet/xbot");
 async function chatBot(userId, accessToken, server, wallet) {
     const matrix = new xbot_1.Matrix(userId, accessToken, server);
     matrix.on("message", (msg) => {
