@@ -5,8 +5,7 @@ import { CronJob } from "cron";
 import { transaction } from "./transaction";
 import { Wallet } from "./wallet";
 import { chatBot } from "./chat";
-// @ts-ignore
-import config from "../config.json";
+const config = require("../config.json");
 
 const stocks = [
   ["ACS.MC", "ACS S.A."],

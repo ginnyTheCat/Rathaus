@@ -19,6 +19,14 @@
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "test"]
+    },
+    {
+      "type": "node",
+      "name": "Build",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "build"]
     }
   ]
 }
