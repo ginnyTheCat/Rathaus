@@ -15,6 +15,10 @@ export async function start(
   await lock.acquire("browser", async (done) => {
     browser = await puppeteer.launch({
       headless: process.env.HEADLESS !== undefined,
+      args:
+        process.env.NO_SANDBOX !== undefined
+          ? ["--no-sandbox", "--disable-setuid-sandbox"]
+          : [],
     });
 
     const loginPage = await browser.newPage();

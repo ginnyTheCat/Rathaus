@@ -13,6 +13,9 @@ async function start(username, password, wallet) {
     await lock.acquire("browser", async (done) => {
         browser = await puppeteer_1.default.launch({
             headless: process.env.HEADLESS !== undefined,
+            args: process.env.NO_SANDBOX !== undefined
+                ? ["--no-sandbox", "--disable-setuid-sandbox"]
+                : [],
         });
         const loginPage = await browser.newPage();
         await loginPage.goto("https://www.planspiel-boerse.de/toplevel/main/deutsch/index.html");
